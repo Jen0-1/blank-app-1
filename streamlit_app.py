@@ -1,56 +1,73 @@
 import streamlit as st
 
 # Título
-st.title("🌍 Calculadora de Huella de Carbono")
+st.title("🌱 ¡Bienvenido al Cuidado del Planeta!")
 
-# Introducción
+# Mensaje de bienvenida
 st.write("""
-    Bienvenido a la calculadora de huella de carbono. Con esta herramienta puedes estimar tu huella de carbono diaria
-    según diferentes actividades que realizas en tu vida cotidiana, como el transporte y el uso de energía.
-    Al final te mostraremos tu huella total y algunas recomendaciones para reducirla.
+    ¡Hola! Gracias por unirte al movimiento de cuidado del planeta. 💚
+    En esta aplicación te ayudaremos a realizar pequeños cambios que, sumados, pueden tener un gran impacto en nuestro entorno.
+    Cada decisión cuenta, desde reducir el uso de plástico hasta ahorrar agua y energía. 🌍
 """)
 
-# Entrada de transporte (km recorridos al día en coche, bus, bicicleta)
-km_auto = st.number_input("¿Cuántos kilómetros recorres al día en automóvil?", min_value=0.0, step=1.0)
-km_bus = st.number_input("¿Cuántos kilómetros recorres al día en bus o transporte público?", min_value=0.0, step=1.0)
-km_bici = st.number_input("¿Cuántos kilómetros recorres al día en bicicleta?", min_value=0.0, step=1.0)
+# Opciones para aprender más
+st.write("### ¿Sabías que...? 🤔")
+st.write("""
+    - Si cada persona redujera su consumo de plástico en un 50%, se evitarían miles de toneladas de basura plástica en el océano.
+    - Reciclar una sola botella de plástico puede ahorrar suficiente energía para encender una bombilla durante 3 horas.
+    - Si ahorráramos agua en nuestras casas, podríamos ayudar a evitar sequías y proteger nuestros ecosistemas acuáticos.
+""")
 
-# Entrada de consumo energético en el hogar (kWh de electricidad al día)
-energia_hogar = st.number_input("¿Cuántos kWh de electricidad consumes al día en tu hogar?", min_value=0.0, step=0.1)
+# Interacción: Selección de acciones para ayudar al planeta
+st.write("### ¿Qué acciones te gustaría comenzar a tomar para ayudar al planeta? 🌍")
 
-# Factor de emisión para cada actividad (en kg de CO2 por unidad)
-emision_auto = 0.24  # kg CO2 por km en automóvil
-emision_bus = 0.05   # kg CO2 por km en bus
-emision_bici = 0.0   # kg CO2 por km en bicicleta (cero emisiones)
-emision_energia = 0.92  # kg CO2 por kWh de electricidad
+acciones = st.multiselect(
+    "Selecciona las acciones que te gustaría implementar:",
+    ["Reducir el uso de plástico",
+     "Reutilizar productos",
+     "Reciclar correctamente",
+     "Ahorrar agua",
+     "Usar energías renovables",
+     "Plantar árboles",
+     "Comer productos locales y de temporada"]
+)
 
-# Cálculo de huella de carbono por cada actividad
-huella_auto = km_auto * emision_auto
-huella_bus = km_bus * emision_bus
-huella_bici = km_bici * emision_bici
-huella_energia = energia_hogar * emision_energia
+# Mostrar las acciones seleccionadas por el usuario
+if acciones:
+    st.write("### ¡Gracias por tomar estas acciones! 🌱")
+    st.write("Estas son las acciones que seleccionaste para ayudar al planeta:")
+    for accion in acciones:
+        st.write(f"- {accion}")
+    st.write("""
+        Recuerda que cada pequeña acción puede marcar una gran diferencia. ¡Tú estás contribuyendo a un planeta más limpio y saludable! 💧🌳
+    """)
 
-# Huella total
-huella_total = huella_auto + huella_bus + huella_bici + huella_energia
+    # Consejos adicionales según las acciones seleccionadas
+    st.write("### Consejos para llevar a cabo tus acciones:")
+    if "Reducir el uso de plástico" in acciones:
+        st.write("- Usa bolsas reutilizables, evita plásticos de un solo uso y opta por productos empaquetados sin plástico.")
+    if "Reutilizar productos" in acciones:
+        st.write("- Reutiliza botellas, frascos y otros artículos en lugar de desecharlos.")
+    if "Reciclar correctamente" in acciones:
+        st.write("- Separa los materiales reciclables como vidrio, papel, plástico y metal de la basura común.")
+    if "Ahorrar agua" in acciones:
+        st.write("- Instala dispositivos de ahorro de agua como regaderas eficientes y no dejes el grifo abierto innecesariamente.")
+    if "Usar energías renovables" in acciones:
+        st.write("- Si es posible, cambia a energía solar o busca opciones de energía limpia.")
+    if "Plantar árboles" in acciones:
+        st.write("- Participa en campañas locales de reforestación o planta árboles en tu propio jardín.")
+    if "Comer productos locales y de temporada" in acciones:
+        st.write("- Apoya a los productores locales y elige frutas y verduras de temporada para reducir la huella de carbono.")
 
-# Mostrar resultados
-if st.button("Calcular Huella de Carbono"):
-    st.write(f"### Tu huella de carbono diaria es:")
-    st.write(f"- Transporte en automóvil: {huella_auto:.2f} kg CO2")
-    st.write(f"- Transporte en bus: {huella_bus:.2f} kg CO2")
-    st.write(f"- Transporte en bicicleta: {huella_bici:.2f} kg CO2")
-    st.write(f"- Consumo de electricidad en el hogar: {huella_energia:.2f} kg CO2")
-    st.write(f"**Total de huella de carbono diaria**: {huella_total:.2f} kg CO2")
-
-    # Recomendaciones para reducir la huella de carbono
-    st.write("### ¿Cómo puedes reducir tu huella de carbono?")
-    if huella_auto > 0:
-        st.write("- Opta por utilizar transporte público o compartir coche con otras personas.")
-    if huella_bus > 0:
-        st.write("- Intenta usar transporte público más ecológico, como autobuses eléctricos.")
-    if huella_bici > 0:
-        st.write("- ¡Genial! Andar en bicicleta es una opción sin emisiones.")
-    if huella_energia > 0:
-        st.write("- Considera instalar paneles solares o reducir el consumo eléctrico utilizando bombillas LED y electrodomésticos eficientes.")
+else:
+    st.write("Selecciona alguna acción para saber cómo puedes empezar a contribuir al cuidado del planeta.")
     
-    st.write("Recuerda que cada pequeña acción ayuda a reducir el impacto ambiental y a cuidar nuestro planeta.")
+# Botón interactivo para dar más información
+if st.button("¡Estoy listo para empezar! 🌍"):
+    st.write("¡Genial! Recuerda que pequeños cambios pueden generar un gran impacto. 🌱")
+    st.write("Gracias por tomar la iniciativa de cuidar nuestro planeta. ¡Juntos podemos marcar la diferencia!")
+
+# Mensaje final
+st.write("""
+    **Recuerda**: Cada acción cuenta, por pequeña que sea. ¡Cuidemos juntos el futuro de nuestro planeta! 💧🌳
+""")
